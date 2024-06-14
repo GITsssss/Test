@@ -1,0 +1,45 @@
+{
+  "author": {
+    "name": "HLVR Core",
+    "url": "git+ssh://git@github.com:GITsssss/Test.git"
+  },
+  "dependencies": {
+
+    "com.unity.xr.openxr": "1.6.0",
+    "com.unity.animation.rigging": "1.1.1",
+    "com.unity.inputsystem": "1.4.2"
+  },
+  "description": "UnityVR",
+  "displayName": "HLVR",
+  "documentationUrl": "https://spatiallabs.acer.com/developer",
+  "keywords": [
+    "XR",
+    "VR",
+    "HLVR"
+  ],
+  "license": "NONE",
+  "name": "com.hlvr.core",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/3d-group/unity-package-template.git"
+  },
+  "samples": [
+    {
+      "displayName": "GrabObject",
+      "description": "\u7528\u624b\u67c4\u6293\u53d6\u7269\u4f53\u793a\u4f8b\u6f14\u793a",
+      "path": "Samples~/Interaction"
+    },
+    {
+      "displayName": "InteractionUI",
+      "description": "\u548cUI\u4ea4\u4e92\u7684\u793a\u4f8b\u6f14\u793a",
+      "path": "Samples~/Interaction"
+    },
+    {
+      "displayName": "Example",
+      "description": "和场景中游戏对象进行交互的示例包",
+      "path": "Samples~/Example"
+    }
+  ],
+  "unity": "2020.3",
+  "version": "2.0.1"
+}

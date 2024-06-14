@@ -1,0 +1,20 @@
+{
+    "name": "editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:fe685ec1767f73d42b749ea8045bfe43",
+        "GUID:29e08f5bd8ca8f34587ce96419150d66",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
