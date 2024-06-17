@@ -11,10 +11,27 @@ public class DebugEventEditor :Editor
     public override void OnInspectorGUI()
     {
         de =target as  DebugEvent;
-        base.OnInspectorGUI();
-        if (GUILayout.Button("ต๗สิ")) 
+        // base.OnInspectorGUI();
+        serializedObject.Update();
+
+        using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
         {
-            de.Test();
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("events_a"));
+            if (GUILayout.Button("ต๗สิ"))
+            {
+                de.events_a?.Invoke();
+            }
         }
+
+        using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+        {
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("events_b"));
+            if (GUILayout.Button("ต๗สิ"))
+            {
+                de.events_b?.Invoke();
+            }
+        }
+
+        serializedObject.ApplyModifiedProperties();
     }
 }

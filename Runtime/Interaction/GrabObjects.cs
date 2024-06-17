@@ -89,7 +89,7 @@ namespace HLVR.Interaction
                 if (this.GetComponent<Collider>() != null)
                     this.GetComponent<Collider>().enabled = true;
             }
-            if (grabType == GrabType.Child)
+            if (grabType == GrabType.Child&& grabResponse.ToString().Contains("NonKinematic"))
             {
                 rig.isKinematic = false;
             }
@@ -152,16 +152,7 @@ namespace HLVR.Interaction
                 {
                     if (currentHand != null) 
                     {
-                        switch (currentHand.inputSource) 
-                        {
-                            case ControllerType.Left:
-                                currentHand.ForcedDisposalLeft();
-                                break;
-
-                            case ControllerType.Right:
-                                currentHand.ForcedDisposalRight();
-                                break;
-                        }
+                        currentHand.ForcedDisposalHand(currentHand.inputSource);
                     }
                 }
 
@@ -220,26 +211,25 @@ namespace HLVR.Interaction
             }
         }
 
+
+        /// <summary>
+        /// 设置交互状态
+        /// </summary>
+        /// <param name="state"></param>
         public void SetInteractionState(bool state)
         {
             DisableInteraction = state;
         }
 
 
+        /// <summary>
+        /// 脱离手
+        /// </summary>
         public void ForcedDisposal()
         {
             if (currentHand != null)
             {
-                switch (currentHand.inputSource)
-                {
-                    case ControllerType.Left:
-                        currentHand.ForcedDisposalLeft();
-                        break;
-
-                    case ControllerType.Right:
-                        currentHand.ForcedDisposalRight();
-                        break;
-                }
+                currentHand.ForcedDisposalHand(currentHand.inputSource);             
             }
         }
     }
@@ -252,7 +242,8 @@ namespace HLVR.Interaction
     {
         SetRigidbodyIsTrigger = 2,//设置刚体得碰撞盒为触发器
         NonKinematic = 4,//设置刚体为非运动学
-        CloseGravity = 8,//关闭重力
+      //  Kinematic=8,
+        CloseGravity = 16,//关闭重力
         DisEnableCollider = 32,//关闭碰撞盒
         GrabPointAsCenter= 64,//以抓取点为中心
         DisEnablePosition=128,//关闭位置跟踪

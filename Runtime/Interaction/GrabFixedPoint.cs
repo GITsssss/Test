@@ -1,60 +1,51 @@
 using HLVR.Interaction;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using HLVR.InputSystem;
 
 public class GrabFixedPoint : MonoBehaviour
 {
     public KeyType key;
-    public Vector3 point;
-    public Vector3 value;
-    public Vector3 handpos;
-    public float dd;
-    public Vector3 playerposition;
-    public  Hand hand;
-
-    bool can;
+    public  Hand  hand;
+    Vector3 markPostion;
+    Vector3 currentPostion;
+    public Vector3 oripos;
+    [HideInInspector]
+    public bool can=true;
     private void Update()
     {
         if (hand != null) 
         {
-            if (VRInput.GetKey(key, ControllerType.Left)&& can)
+            if (VRInput.GetKeyDown(key, hand.inputSource))
             {
-                value = point - hand.transform.position;
-                handpos = hand.transform.position;
-                if (value.magnitude> dd)
-                InteractionRay.Instance.transform.position = playerposition + (point - hand.transform.position);
+                if(hand.inputSource==ControllerType.Left)
+                markPostion = InteractionRay.Instance.lefthandInfoData.position;
+                else if(hand.inputSource==ControllerType.Right)
+                 markPostion = InteractionRay.Instance.righthandInfoData.position;
+                oripos =InteractionRay.Instance.transform.position;
+                GrabFixedPointManager.Instance.CloseOther(this.gameObject);
             }
-            //else if (VRInput.GetKey(key, ControllerType.Right))
-            //{
-            //    InteractionRay.Instance.transform.position = playerposition + (point - hand.transform.position);
-            //}
-        }
-        
-        //else if (VRInput.GetKeyUp(key, ControllerType.Right))
-        //{
-        //    hand = null;
-        //}
+            if (VRInput.GetKey(key, hand.inputSource) && can)
+            {
+                Vector3 value = currentPostion - markPostion;
+                InteractionRay.Instance.transform.position = oripos +new Vector3(value.x, value.y*-1, value.z);
+                if (hand.inputSource == ControllerType.Left)
+                    currentPostion = InteractionRay.Instance.lefthandInfoData.position;
+                else if (hand.inputSource == ControllerType.Right)
+                    currentPostion = InteractionRay.Instance.righthandInfoData.position;
+            }
+            else
+            if (VRInput.GetKeyUp(key, hand.inputSource))
+            {
+                hand = null;
+            }
+        }   
+
     }
-
-
-
 
     private void OnTriggerStay(Collider other)
     {
-        if (hand == null)
-            hand = other.GetComponent<Hand>();
-
-        if (hand != null)
-        {
-            if (VRInput.GetKeyDown(key, ControllerType.Left) && hand.inputSource == ControllerType.Left)
-            {
-                playerposition = InteractionRay.Instance.transform.position;
-                point = hand.transform.position;
-                can = true;
-            }
-        }
+        if(other.GetComponent<Hand>()!=null)
+        if(hand==null|| other.GetComponent<Hand>().inputSource!=hand.inputSource)
+        hand = other.GetComponent<Hand>();
     }
-
 }

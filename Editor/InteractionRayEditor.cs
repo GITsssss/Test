@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using HLVR.Interaction;
-using UnityEngine.XR;
-using UnityEditor.XR;
+
 [CustomEditor(typeof(InteractionRay))]
 public class InteractionRayEditor : Editor
 {
@@ -32,10 +31,12 @@ public class InteractionRayEditor : Editor
        
 
         GUILayout.EndHorizontal();
-        m_EnableXRInitializeXROnStartUP = GUILayout.Toggle(m_EnableXRInitializeXROnStartUP, "启用XR初始化", GUILayout.Width(300), GUILayout.Width(40));
-        if (m_EnableXRInitializeXROnStartUP)
-        {
+        //m_EnableXRInitializeXROnStartUP = GUILayout.Toggle(m_EnableXRInitializeXROnStartUP, "启用XR初始化", GUILayout.Width(300), GUILayout.Width(40));
+        //if (m_EnableXRInitializeXROnStartUP)
+        //{
 
-        }
+        //}
     }
+
+   
 }

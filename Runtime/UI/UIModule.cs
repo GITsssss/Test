@@ -6,6 +6,7 @@ public class UIModule : MonoBehaviour
 {
     private void OnEnable()
     {
+        Debug.Log(UIManager.Instance);
         if (!UIManager.Instance.stack.Contains(this.gameObject)) 
         {
             UIManager.Instance.AddStack(this.gameObject);
@@ -15,10 +16,5 @@ public class UIModule : MonoBehaviour
         {
             transform.GetChild(0).gameObject.SetActive(true);
         }
-    }
-
-    private void OnDisable()
-    {
-       // UIManager.Instance.stack.RemoveIndex(this.gameObject);
     }
 }

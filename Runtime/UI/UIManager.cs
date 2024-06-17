@@ -4,9 +4,13 @@ using UnityEngine;
 using HLVR.EventSystems;
 public class UIManager : MonoBehaviour
 {
-    public GameObject oriPage;//原始界面
+    [Tooltip("默认层级UI")]
+    public GameObject DefaultLayer;//原始界面
+    [Tooltip("全局返回主页按钮，可为空")]
     public InteractionEventElement back;
-    public UIModule[] m_UIModules;//ui模组  每次只能有一个模组处于激活状态
+    [Tooltip("UI一级模组")]
+    public List<UIModule> m_UIModules;//ui模组  每次只能有一个模组处于激活状态
+    [Tooltip("UI事件元素模块")]
     public UIElementGroup[] m_UIElementGroup;
     [ReadOnly]
     public HLVRStack stack;
@@ -23,7 +27,6 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        stack = new HLVRStack(0);
         if (manager == null)
         {
             manager = this;
@@ -32,7 +35,7 @@ public class UIManager : MonoBehaviour
         {
             Destroy(this);
         }
-
+        stack = new HLVRStack(0);
         for (int i = 0; i < m_UIElementGroup.Length; i++)
         {
             for (int n = 0; n < m_UIElementGroup[i].m_IEES.Length; n++)
@@ -42,19 +45,19 @@ public class UIManager : MonoBehaviour
             }
         }
 
-        oriPage.SetActive(true);
-        back.gameObject.SetActive(false);
+        DefaultLayer.SetActive(true);
+        back?.gameObject.SetActive(false);
 
     }
 
     private void OnEnable()
     {
-       back.buttonEvent.m_Button.m_Events.AddListener(Back);
+       back?.buttonEvent.m_Button.m_Events.AddListener(Back);
     }
 
     private void OnDisable()
     {
-        back.buttonEvent.m_Button.m_Events.RemoveListener(Back);
+        back?.buttonEvent.m_Button.m_Events.RemoveListener(Back);
     }
 
     public void Back()//关闭最上层级的UI
@@ -72,36 +75,40 @@ public class UIManager : MonoBehaviour
 
         if (stack.Count == 0) 
         {
-           oriPage.SetActive(true);
-            back.gameObject.SetActive(false);
+           DefaultLayer.SetActive(true);
+            back?.gameObject.SetActive(false);
         }
         else 
         {
-            if (oriPage.activeSelf)
-            oriPage.SetActive(false);
-            if (!back.gameObject.activeSelf)
-                back.gameObject.SetActive(true);
+            if (DefaultLayer.activeSelf)
+            DefaultLayer.SetActive(false);
+            if (back!=null&&!back.gameObject.activeSelf)
+                back?.gameObject.SetActive(true);
         }
     }
 
+    public void OpenModule(int index)
+    {
+        m_UIModules[index].gameObject.SetActive(true);
+    }
     public void AddElementStack(GameObject ui)
     {
         GameObject g= stack.Peek();
         if(g.GetComponent<UIModule>()==null&&g.transform.gameObject!=ui.transform.parent.gameObject)
         g?.SetActive(false);
         stack.Push(ui);
-        if (oriPage.activeSelf)
-            oriPage.SetActive(false);
-        if (!back.gameObject.activeSelf)
+        if (DefaultLayer.activeSelf)
+            DefaultLayer.SetActive(false);
+        if (back != null && !back.gameObject.activeSelf)
             back.gameObject.SetActive(true);
     }
 
     public void AddStack(GameObject ui)
     {
         stack.Push(ui);
-        if (oriPage.activeSelf)
-            oriPage.SetActive(false);
-        if (!back.gameObject.activeSelf)
+        if (DefaultLayer.activeSelf)
+            DefaultLayer.SetActive(false);
+        if (back != null && !back.gameObject.activeSelf)
             back.gameObject.SetActive(true);
     }
 
@@ -113,7 +120,7 @@ public class UIManager : MonoBehaviour
 
     public void ActionUIModuld(GameObject current)
     { 
-       for(int i=0;i< m_UIModules.Length;i++)
+       for(int i=0;i< m_UIModules.Count;i++)
        {
             if (current == m_UIModules[i].gameObject)
             {
@@ -182,7 +189,7 @@ public struct HLVRStack
     /// <returns></returns>
     public bool Contains(GameObject obj) 
     {
-      return  stack.Contains(obj);
+       return  stack.Contains(obj);
     }
     /// <summary>
     /// 移除并返回列表最顶端的元素

@@ -6,6 +6,8 @@ using HLVR.InputSystem;
 using HLVR.EventSystems;
 using HLVR.Arithmetic;
 using UnityEngine.UIElements;
+using UnityEngine.Animations.Rigging;
+using static Codice.CM.Common.CmCallContext;
 
 namespace HLVR.Interaction
 {
@@ -18,6 +20,7 @@ namespace HLVR.Interaction
         [Tooltip("当前抓住的物体")]
         public GrabObjects current;
         public float speed = 85f;
+        public float threshold;
         [HideInInspector]
         public GameObject grabpoint;
         [HideInInspector]
@@ -140,8 +143,6 @@ namespace HLVR.Interaction
                         current?.OnGrab();
                         aotherHand.grabOBJ = null;
                         aotherHand.current = null;
-                      
-
                     }
                 }
             }
@@ -162,7 +163,7 @@ namespace HLVR.Interaction
                     case GrabType.RigidbodyPosition://刚体位置跟踪
                         if (current.grabResponse.ToString().Contains("GrabPointAsCenter"))
                         {
-                            vector = grabpoint.transform.position - current.rig.position;
+                             vector = grabpoint.transform.position - current.rig.position;
                         }
                         else
                         {
@@ -170,12 +171,30 @@ namespace HLVR.Interaction
                         }
 
                         Vector3 targetVelocity =vector  * speed;
-                       // if(Teleport.Instance.)
-                       // current.rig.position = transform.position;
-                        if ((current.rig.velocity - targetVelocity).magnitude >= 0.2f && !current.grabResponse.ToString().Contains("DisEnablePosition"))
-                            current.rig.velocity = Vector3.MoveTowards(current.rig.velocity, targetVelocity, 100 * Time.fixedDeltaTime);
+
+
+                        //旧版刚体跟随逻辑-Start
+                        ////if(Teleport.Instance.)
+                        ////current.rig.position = transform.position;
+
+                        //if ((current.rig.velocity - targetVelocity).magnitude >= 0.2f && !current.grabResponse.ToString().Contains("DisEnablePosition"))
+                        //    current.rig.velocity = Vector3.MoveTowards(current.rig.velocity, targetVelocity, 100 * Time.fixedDeltaTime);
+                        //else
+                        //    current.rig.velocity = Vector3.zero;
+                        //旧版刚体跟随逻辑-End
+
+
+                        //新版刚体跟随逻辑-Start
+                        if (Vector3.Magnitude(current.rig.velocity - targetVelocity) <= threshold)
+                        {
+
+                            current.rig.velocity= vector * Vector3.Distance(transform.position, current.rig.position);
+                        }
+
                         else
-                            current.rig.velocity = Vector3.zero;
+                            current.rig.velocity= vector * speed * Vector3.Distance(transform.position, current.rig.position);
+                        //新版刚体跟随逻辑-End
+
 
                         if (!current.grabResponse.ToString().Contains("DisEnableRotation"))
                             current.rig.rotation = transform.rotation;
@@ -221,35 +240,15 @@ namespace HLVR.Interaction
             }
         }
 
-        /// <summary>
-        ///  如果左手中的抓取的物体不为空，则强制使物体脱离左手
-        /// </summary>
-        public void ForcedDisposalLeft()
-        {
-            if (current != null && inputSource == ControllerType.Left)
-            {
-                
-                    if (current.transform.parent == this.transform.parent)
-                        current.transform.parent = null;
-                    current.rig.velocity = Vector3.zero;
-                    current.SlipTheCollar();
-                    current.currentHand = null;
-                grabOBJ = null;
-                current = null;
-                ShowHand();
-
-            }
-        }
-
 
         /// <summary>
-        /// 如果右手中的抓取的物体不为空，则强制使物体脱离右手
+        /// 如果手中的抓取的物体不为空，则强制使物体脱离手
         /// </summary>
-        public void ForcedDisposalRight()
+        /// <param name="controllerType">手部类型</param>
+        public void ForcedDisposalHand(ControllerType controllerType)
         {
-            if (current != null&&inputSource==ControllerType.Right)
+            if (current != null&&inputSource== controllerType)
             {
-
                 if (current.transform.parent == this.transform.parent)
                     current.transform.parent = null;
                 current.rig.velocity = Vector3.zero;

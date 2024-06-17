@@ -11,10 +11,24 @@ public class WebResource : EditorWindow
         Application.OpenURL("https://www.textures.com/browse/3d-objects/114553");
     }
 
+
+    [MenuItem("HLVR/WebResource/Unity商场")]
+    public static void UnityStore()
+    {
+        Application.OpenURL("https://assetstore.unity.com/zh");
+    }
+
+
     [MenuItem("HLVR/WebResource/阿里云图标")]
     public static void ALY()
     {
         Application.OpenURL("https://www.iconfont.cn/");
+    }
+
+    [MenuItem("HLVR/WebResource/觅元素")]
+    public static void MYS()
+    {
+        Application.OpenURL("https://m.51yuansu.com/");
     }
 
     [MenuItem("HLVR/WebResource/全景图")]

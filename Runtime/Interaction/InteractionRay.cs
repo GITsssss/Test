@@ -4,6 +4,7 @@ using UnityEngine.XR;
 using HLVR.InputSystem;
 using HLVR.Configuration;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Management;
 
 namespace HLVR.Interaction 
 {
@@ -709,7 +710,6 @@ namespace HLVR.Interaction
                 return true;
             else return false;
         }
-
         private InteractionObject RayCastIO()//������ɽ�������Ľ���״̬
         {
             if (RayCastState())
@@ -840,6 +840,9 @@ namespace HLVR.Interaction
             else
                 return new Vector3(0,0,0);
         }
+
+       
+
     }
     /// <summary>
     ///  MouseKeyboard 鼠标键盘；VR 虚拟现实设备 头盔、手柄；Touch 触屏；HandShank 游戏手柄, HandTracking 手势追踪

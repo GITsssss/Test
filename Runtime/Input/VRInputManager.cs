@@ -27,7 +27,6 @@ namespace HLVR.InputSystem
         public bool autoLoad;
         public InputActionAsset actions;
 
-      
 
         private void Reset()
         {
@@ -42,7 +41,7 @@ namespace HLVR.InputSystem
             }
             else 
             {
-              Destroy(inputManager);  
+               Destroy(inputManager);  
             }
             if(autoLoad)
             actions=Resources.Load<InputActionAsset>("Input");

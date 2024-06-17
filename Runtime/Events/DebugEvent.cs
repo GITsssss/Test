@@ -5,9 +5,6 @@ using HLVR.EventSystems;
 public class DebugEvent : MonoBehaviour
 {
     public int index;
-    public CustomEvents[] events;
-    public void Test()
-    {
-        events[index].m_Events?.Invoke();
-    }
+    public InteractionEvent events_a ;
+    public InteractionEvent events_b;
 }

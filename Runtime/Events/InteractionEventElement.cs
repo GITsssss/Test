@@ -11,7 +11,7 @@ namespace HLVR.EventSystems
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(AudioSource))]
-    public class InteractionEventElement : MonoBehaviour,IButtonEventable,ITriggerEvent, ISoundEffectEventable
+    public class InteractionEventElement : MonoBehaviour ,IButtonEventable,ITriggerEvent, ISoundEffectEventable
     {
         public  bool m_LockInteraction;
         public  LinkResponse linkResponse;
@@ -244,6 +244,12 @@ namespace HLVR.EventSystems
                     rect.oriAngleOffset = UIAnimation.tarAngle;
                     rect.speedangle = UIAnimation.speedangle;
                 }
+
+                if (UIAnimation.m_UseRectSizeDelta)
+                {
+                    rect.orisizeDeltaOffset = UIAnimation.tarsizeDelta;
+                    rect.speedsizeDelta = UIAnimation.speedtarsizeDelta;
+                }
             }
            
 
@@ -255,7 +261,7 @@ namespace HLVR.EventSystems
                 for (int i=0;i<imgs.Length;i++)
                 {
                     ir.rcs[i].images = imgs[i];
-                    ir.rcs[i].response = true;
+                    ir.rcs[i].response = ResponseFlags.Color;
                 }
                 ir.responseColor = ImageResponseSet.responseColor;
                 ir.lockColor = ImageResponseSet.lockColor;
@@ -269,7 +275,8 @@ namespace HLVR.EventSystems
                 for (int i=0;i<texs.Length;i++)
                 {
                     tMPUIIO.tmpugcs[i].textMeshPro = texs[i];
-                    tMPUIIO.tmpugcs[i].response = true;
+                    tMPUIIO.tmpugcs[i].m_Enable= true;
+                    tMPUIIO.tmpugcs[i].allow= true;
                 }
                 tMPUIIO.ioColor = TMPUIIOSet.responseColor;
                 tMPUIIO.lockColor = TMPUIIOSet.lockColor;

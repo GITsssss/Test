@@ -25,45 +25,48 @@ public class ToolBox : EditorWindow
         string[] guids = AssetDatabase.FindAssets("", new[] { path });
         Texture2D[] thumbnail=new Texture2D[guids.Length];
         GUILayout.Label("VR½»»¥Ä£ÐÍ");
-        GUILayout.BeginHorizontal(GUILayout.Width(200),GUILayout.Height(100));
-        for (int i=0;i<guids.Length;i++)
+       
+        using (var horizontalScope = new GUILayout.VerticalScope(EditorStyles.helpBox))
         {
-            string str = AssetDatabase.GUIDToAssetPath(guids[i]);
-            thumbnail[i] = AssetPreview.GetAssetPreview(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(guids[i])));
-          
-            GUILayout.BeginVertical(GUILayout.Height(100));
-            string s = str.Remove(0, str.LastIndexOf("/") + 1);
-            GameObject pre= AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(guids[i]));
-            string names = s;
-            s = s.Replace(".prefab","");
-            GUIStyle style=new GUIStyle();
-            style.normal.textColor = Color.white;
-            style.fontStyle= FontStyle.Bold;
-            style.fixedWidth = 100;
-            style.fontSize =15;
-            style.alignment = TextAnchor.MiddleCenter;
-            style.clipping = TextClipping.Clip;
-            if (GUILayout.Button(thumbnail[i], GUILayout.Width(100), GUILayout.Height(100)))
+            GUILayout.BeginHorizontal(GUILayout.Width(200), GUILayout.Height(100));
+            for (int i = 0; i < guids.Length; i++)
             {
-                if(s == names.Replace(".prefab", ""))
-                Instantiate(pre);
+                string str = AssetDatabase.GUIDToAssetPath(guids[i]);
+                thumbnail[i] = AssetPreview.GetAssetPreview(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(guids[i])));
+
+                GUILayout.BeginVertical(GUILayout.Height(100));
+                string s = str.Remove(0, str.LastIndexOf("/") + 1);
+                GameObject pre = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(guids[i]));
+                string names = s;
+                s = s.Replace(".prefab", "");
+                GUIStyle style = new GUIStyle();
+                style.normal.textColor = Color.white;
+                style.fontStyle = FontStyle.Bold;
+                style.fixedWidth = 100;
+                style.fontSize = 15;
+                style.alignment = TextAnchor.MiddleCenter;
+                style.clipping = TextClipping.Clip;
+                if (GUILayout.Button(thumbnail[i], GUILayout.Width(100), GUILayout.Height(100)))
+                {
+                    if (s == names.Replace(".prefab", ""))
+                        Instantiate(pre);
+                }
+
+                GUILayout.Label(s, style, GUILayout.Width(100));
+                GUILayout.EndVertical();
+
+                GUILayout.Space(12);
             }
-            
-            GUILayout.Label(s, style, GUILayout.Width(100));
-            GUILayout.EndVertical();
-           
-            GUILayout.Space(12);
+            GUILayout.EndHorizontal();
         }
        
-        GUILayout.EndHorizontal();
-        DrawLine(800,2);
+       
+    
+      
         GUILayout.EndScrollView();
     }
 
     
 
-    public void DrawLine(float width,float height)
-    {
-        GUILayout.Box(EditorGUIUtility.whiteTexture, GUILayout.Width(width), GUILayout.Height(height));
-    }
+  
 }

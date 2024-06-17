@@ -5,8 +5,7 @@ namespace HLVR.EventSystems
 {
     public class LifecycleEvent : MonoBehaviour
     {
-        [ReadOnly]
-        public string explain = "Script life cycle 脚本生命周期事件 ";
+
         public enum ExecuteType
         {
             Delay,//延迟
@@ -78,8 +77,19 @@ namespace HLVR.EventSystems
             {
                 if (m_FinishEventCloseThis) AwakeEvent.AddListener(RunFinishClose);
                 AwakeEvent.Invoke();
+
+               
             }
         }
+
+        public void SetEventInvokeState(InteractionEvent interaction, UnityEngine.Events.UnityEventCallState state)
+        {
+            for (int i=0;i<interaction.GetPersistentEventCount();i++)
+            {
+                interaction.SetPersistentListenerState(i, state);
+            }       
+        }
+
         void StartEventFunc()
         {
             if (StartEvent != null) 

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using HLVR.InputSystem;
+using HLVR.EventSystems;
+
 namespace HLVR.Interaction 
 {
     //[RequireComponent(typeof(LineRenderer))]
@@ -36,6 +38,7 @@ namespace HLVR.Interaction
         TeleportArea teleportArea;
         TeleportPoint teleportPoint;
         GameObject hitObject;
+        public InteractionEvent teleportEvent;
 
         private static Teleport teleport;
         public static Teleport Instance 
@@ -228,6 +231,7 @@ namespace HLVR.Interaction
                         InteractionRay.Instance.transform.rotation = hitObject.transform.rotation;
                         teleportPoint = null;
                     }
+                    teleportEvent?.Invoke();
                     transform.GetComponent<Teleport>().enabled = false;
                 }
                 else 

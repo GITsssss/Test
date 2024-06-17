@@ -2,24 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static log4net.Appender.ColoredConsoleAppender;
+using TMPro;
+using NPOI.SS.UserModel;
 
 public class UIStyle : MonoBehaviour
 {
+    [SerializeField]
     public UIStyleWareHouse uswh;
     [HideInInspector]
-    public Sprite[] sprites;
+    public Image image;
     [HideInInspector]
-    public Color[] colors;
-    Image image;
-
+    public ImageStyle[] imageStyle;
+    [HideInInspector]
+    public TextMeshProUGUI uitext;
+    [HideInInspector]
+    public bool cusTmpro;
+    [HideInInspector]
+    public TextMeshProUGUI custmprougui;
+    [HideInInspector]
+    public TMproStyle[] tmprostyle;
     private void Reset()
     {
-        if (GetComponent<Image>() == null) 
-        {
-            DestroyImmediate(this);
-            Debug.LogError("此脚本智能添加到具有Image组件的游戏对象上");
-        }
+        image = GetComponent<Image>();
+        uitext=GetComponent<TextMeshProUGUI>();   
     }
     private void Awake()
     {
@@ -32,17 +37,46 @@ public class UIStyle : MonoBehaviour
             image = GetComponent<Image>();
         else 
         {
-            image.sprite = sprites[index];
-            image.color= colors[index];
+            image.sprite = imageStyle[index].sprites;
+            image.color= imageStyle[index].uicolors;
         }
     }
-    public void GetUIStyle() 
+
+    public void SetTmrpoText(int index)
     {
+        if (uitext == null)
+            uitext = GetComponent<TextMeshProUGUI>();
+        else
+        {
+            uitext.text = tmprostyle[index].content ;
+            uitext.color = tmprostyle[index].fontColor;
+            uitext.font = tmprostyle[index].font;
+            uitext.fontSize = tmprostyle[index].fontsize;  
+        }
+    }
+
+
+
+
+    public void GetUIStyle()
+    {
+        image = GetComponent<Image>();
+        if(cusTmpro)
+        uitext = custmprougui;
+        else
+        uitext = GetComponent<TextMeshProUGUI>();
         if (uswh != null) 
         {
-            colors = uswh.imageStyle.uicolors;
-            sprites = uswh.imageStyle.sprites;
+            imageStyle = uswh.imageStyle;
+            tmprostyle = uswh.tmproStyle;
         }
+    }
+
+
+    public bool GetComponentValue<T>()
+    { 
+       if (GetComponent<T>()!=null)return true;
+       else return false;
     }
           
 }

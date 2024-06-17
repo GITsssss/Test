@@ -22,6 +22,11 @@ namespace HLVR.Interaction
         public Vector3 tarAngle;
         [Tooltip("旋转响应速度")]
         public float speedangle;
+
+        [Tooltip("开启尺寸变化响应")]
+        public bool m_UseRectSizeDelta;
+        public Vector2 tarsizeDelta;
+        public float speedtarsizeDelta;
     }
 
     [System.Serializable]
@@ -53,5 +58,21 @@ namespace HLVR.Interaction
     public class EnumFlags : PropertyAttribute
     {
 
+    }
+
+
+    [System.Flags]
+    public enum ResponseFlags
+    {
+        Color = 2,
+        Enter = 4,
+        ClickOdd = 8,
+        ClickEven = 16,
+    }
+
+    [System.Flags]
+    public enum UIImageAnimationFlags
+    {
+        PixelsPerUnitMultiplier=2,
     }
 }
